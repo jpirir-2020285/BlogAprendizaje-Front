@@ -13,7 +13,7 @@ const getToken = () => {
 
 export const getPostsRequest = async () => {
   try {
-    return await apiClient.get("/post/getAllPosts");
+    return await apiClient.get("/post/");
   } catch (err) {
     return { error: true, err };
   }
@@ -21,7 +21,7 @@ export const getPostsRequest = async () => {
 
 export const getPostByIdRequest = async (postId) => {
   try {
-    return await apiClient.get(`/post/getPost/${postId}`);
+    return await apiClient.get(`/post/${postId}`);
   } catch (err) {
     return { error: true, err };
   }
@@ -29,7 +29,7 @@ export const getPostByIdRequest = async (postId) => {
 
 export const addPostRequest = async (post) => {
   try {
-    return await apiClient.post("/post/addPost", post, {
+    return await apiClient.post("/post/", post, {
       headers: {
         Authorization: getToken(),
       },
@@ -43,7 +43,7 @@ export const addPostRequest = async (post) => {
 
 export const getCommentsByPostRequest = async (postId) => {
   try {
-    return await apiClient.get(`/comment/getComments/${postId}`);
+    return await apiClient.get(`/comment/${postId}`);
   } catch (err) {
     return { error: true, err };
   }
@@ -51,7 +51,7 @@ export const getCommentsByPostRequest = async (postId) => {
 
 export const addCommentToPostRequest = async (postId, comment) => {
   try {
-    return await apiClient.post(`/comment/addComment/${postId}`, comment, {
+    return await apiClient.post(`/comment/${postId}`, comment, {
       headers: {
         Authorization: getToken(),
       },
