@@ -1,43 +1,62 @@
-import axios from "axios" 
+import axios from "axios";
 
-const api = axios.create({
-  baseURL: 'http://localhost:1310/v1',
+const apiClient = axios.create({
+  baseURL: "http://localhost:3626/v1",
   timeout: 3000,
-})
-// Posts
-export const getPosts = async () => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/posts`) 
-    return response.data  // Ajusta según tu estructura de respuesta
-  } catch (error) {
-    throw error.response?.data || error 
-  }
-} 
+});
 
-export const getPostById = async (postId) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/posts/${postId}`) 
-    return response.data 
-  } catch (error) {
-    throw error.response?.data || error 
-  }
-} 
+const getToken = () => {
+  return localStorage.getItem("token");
+};
 
-// Comentarios
-export const getCommentsByPost = async (postId) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/comments/post/${postId}`) 
-    return response.data 
-  } catch (error) {
-    throw error.response?.data || error 
-  }
-} 
+// POSTS
 
-export const addCommentToPost = async (postId, commentData) => {
+export const getPostsRequest = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/comments/${postId}`, commentData) 
-    return response.data 
-  } catch (error) {
-    throw error.response?.data || error 
+    return await apiClient.get("/post/getAllPosts");
+  } catch (err) {
+    return { error: true, err };
   }
-} 
+};
+
+export const getPostByIdRequest = async (postId) => {
+  try {
+    return await apiClient.get(`/post/getPost/${postId}`);
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
+export const addPostRequest = async (post) => {
+  try {
+    return await apiClient.post("/post/addPost", post, {
+      headers: {
+        Authorization: getToken(),
+      },
+    });
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
+// COMMENTS
+
+export const getCommentsByPostRequest = async (postId) => {
+  try {
+    return await apiClient.get(`/comment/getComments/${postId}`);
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
+export const addCommentToPostRequest = async (postId, comment) => {
+  try {
+    return await apiClient.post(`/comment/addComment/${postId}`, comment, {
+      headers: {
+        Authorization: getToken(),
+      },
+    });
+  } catch (err) {
+    return { error: true, err };
+  }
+};
