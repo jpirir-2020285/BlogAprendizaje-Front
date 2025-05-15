@@ -41,13 +41,18 @@ export const addPostRequest = async (post) => {
 
 // COMMENTS
 
-export const getCommentsByPostRequest = async (postId) => {
-  try {
-    return await apiClient.get(`/comment/${postId}`);
-  } catch (err) {
-    return { error: true, err };
-  }
-};
+export const addComment = async (comment) => {
+    try {
+        const response = await api.post('/comment/', comment)
+        return response.data
+    } catch (error) {
+        return {
+            error: true,
+            message: 'Error al agregar comentario',
+            details: error
+        }
+    }
+}
 
 export const addCommentToPostRequest = async (postId, comment) => {
   try {
