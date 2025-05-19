@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import useComments from '../shared/hooks/useComments'
-import CommentForm from './CommentForm'
-import CommentList from './CommentList'
+import useComments from '../shared/hooks/useComment.jsx'
+import CommentForm from './CommentForm.jsx'
+import CommentList from './CommentList.jsx'
 
 const PostCard = ({ post }) => {
   const [showComments, setShowComments] = useState(false)

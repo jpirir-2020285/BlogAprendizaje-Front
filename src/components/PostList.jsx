@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import usePosts from '../shared/hooks/usePosts'
-import PostCard from './PostCard'
+import usePosts from '../shared/hooks/usePost.jsx'
+import PostCard from './PostCard.jsx'
 
 const PostList = () => {
   const [course, setCourse] = useState('')

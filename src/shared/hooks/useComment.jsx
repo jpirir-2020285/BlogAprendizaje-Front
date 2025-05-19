@@ -1,4 +1,3 @@
-// src/shared/hooks/useComments.js
 import { useState, useEffect } from 'react'
 import {
   getCommentsByPost,

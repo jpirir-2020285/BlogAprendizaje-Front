@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import PostList from './components/PostList'
+import PostList from './components/PostList.jsx'
 
 function App() {
 
