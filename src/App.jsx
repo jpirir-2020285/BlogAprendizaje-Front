@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import PostList from './components/PostList.jsx'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 
 function App() {
 
   return (
     <>
       <div>
-        <h1>Blog Personal</h1>
         <PostList/>
       </div>
     </>

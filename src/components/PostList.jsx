@@ -21,43 +21,52 @@ const PostList = () => {
     : []
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex space-x-4 mb-6">
-        <select
-          className="border rounded px-3 py-2"
-          value={course}
-          onChange={(e) => setCourse(e.target.value)}
-        >
-          <option value="">Todos los cursos</option>
-          <option value="TALLER">Taller</option>
-          <option value="TECNOLOGIA">Tecnología</option>
-          <option value="PRACTICA">Practica Supervisada</option>
-        </select>
+    <div className="container my-5">
+      <h1 className="display-2 text-primary text-center fw-bold mb-5">
+        Blog Personal
+      </h1>
 
-        <select
-          className="border rounded px-3 py-2"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-        >
-          <option value="">Todos los Años</option>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-        </select>
+      <div className="row g-4 mb-5">
+        <div className="col-12 col-md-6">
+          <select
+            className="form-select form-select-lg border-primary"
+            value={course}
+            onChange={e => setCourse(e.target.value)}
+          >
+            <option value="">Todos los cursos</option>
+            <option value="TALLER">Taller</option>
+            <option value="TECNOLOGIA">Tecnología</option>
+            <option value="PRACTICA">Práctica Supervisada</option>
+          </select>
+        </div>
+        <div className="col-12 col-md-6">
+          <select
+            className="form-select form-select-lg border-primary"
+            value={year}
+            onChange={e => setYear(e.target.value)}
+          >
+            <option value="">Todos los años</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+          </select>
+        </div>
       </div>
 
-      {loading && <p>Cargando...</p>}
-      {error && <p className="text-red-600">{error}</p>}
+      {loading && <p className="text-center text-secondary">Cargando…</p>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
-      {!loading && !error && (
-        sortedPosts.length > 0 ? (
-          sortedPosts.map((post) => (
-            <PostCard key={post._id} post={post} />
-          ))
-        ) : (
-          <p>No se encontraron publicaciones para el filtro seleccionado</p>
-        )
-      )}
+      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {!loading && !error && posts.length === 0 && (
+          <p className="text-center text-muted">No hay publicaciones.</p>
+        )}
+
+        {posts.map(post => (
+          <div key={post._id} className="col">
+            <PostCard post={post} />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

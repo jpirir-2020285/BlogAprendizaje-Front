@@ -33,50 +33,62 @@ const CommentForm = ({onAddComment,commentToEdit,onUpdateComment,onDeleteComment
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <input type="text" placeholder="Tu nombre" value={name} onChange={(e) => setName(e.target.value)} className="w-full border rounded px-3 py-2" required />
-
-      <textarea
-        placeholder="Escribe tu comentario"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        className="w-full border rounded px-3 py-2"
-        rows={4}
-        required
-      />
-
-      <div className="flex space-x-2">
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          {commentToEdit ? 'Actualizar' : 'Comentar'}
-        </button>
-
-        {commentToEdit && (
-          <>
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              Eliminar
+    <div className="card border-primary shadow-sm">
+      <div className="card-body">
+        <h6 className="card-subtitle mb-3 text-primary">
+          {commentToEdit ? 'Editar Comentario' : 'Nuevo Comentario'}
+        </h6>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              placeholder="Tu nombre"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              className="form-control"
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <textarea
+              placeholder="Escribe tu comentario"
+              value={content}
+              onChange={e => setContent(e.target.value)}
+              className="form-control"
+              rows={4}
+              required
+            />
+          </div>
+          <div className="d-flex gap-2">
+            <button type="submit" className="btn btn-success">
+              {commentToEdit ? 'Actualizar' : 'Comentar'}
             </button>
-            <button
-              type="button"
-              onClick={() => {
-                onCancelEdit()
-                setName('')
-                setContent('')
-              }}
-              className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-            >
-              Cancelar
-            </button>
-          </>
-        )}
+            {commentToEdit && (
+              <>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  className="btn btn-danger"
+                >
+                  Eliminar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onCancelEdit()
+                    setName('')
+                    setContent('')
+                  }}
+                  className="btn btn-secondary"
+                >
+                  Cancelar
+                </button>
+              </>
+            )}
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   )
 }
 

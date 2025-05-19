@@ -15,64 +15,58 @@ const PostCard = ({ post }) => {
     handleDeleteComment
   } = useComments(post._id)
 
-  const handleEditComment = (comment) => {
-    setCommentToEdit(comment)
-  }
-
-  const handleCancelEdit = () => {
-    setCommentToEdit(null)
-  }
-
-  const handleUpdate = async (commentId, updatedData) => {
-    await handleUpdateComment(commentId, updatedData)
-    setCommentToEdit(null)
-  }
-
-  const handleDelete = async (commentId) => {
-    await handleDeleteComment(commentId)
+  const toggleComments = () => {
+    setShowComments(v => !v)
     setCommentToEdit(null)
   }
 
   return (
-    <div className="bg-white border rounded-lg shadow p-4">
-      <h3 className="text-xl font-semibold">{post.title}</h3>
-      <p className="mt-2 text-gray-700">{post.description}</p>
-      <div className="mt-2 text-sm text-gray-500">
-        <span className="mr-4">
-          <strong>Curso:</strong> {post.course}
-        </span>
-        <span>
-          <strong>Año:</strong> {new Date(post.dateCreated).getFullYear()}
-        </span>
+    <div className="card h-100 border-2 border-primary rounded-3 shadow-sm">
+      <div className="card-body d-flex flex-column">
+        <h5 className="card-title text-primary fw-semibold">
+          {post.title}
+        </h5>
+
+        <p className="card-text flex-grow-1">{post.description}</p>
+
+        <ul className="list-inline text-muted small mb-3">
+          <li className="list-inline-item">
+            <strong>Curso:</strong> {post.course}
+          </li>
+          <li className="list-inline-item">
+            <strong>Año:</strong>{' '}
+            {new Date(post.dateCreated).getFullYear()}
+          </li>
+        </ul>
+
+        <button
+          className="btn btn-primary mb-3"
+          onClick={toggleComments}
+        >
+          {showComments ? 'Ocultar comentarios' : 'Ver comentarios'}
+        </button>
+
+        {showComments && (
+          <div className="mt-auto">
+            {loading && <p className="text-secondary">Cargando…</p>}
+            {error && <div className="alert alert-danger">{error}</div>}
+            <CommentList
+              comments={comments}
+              onEditComment={c => setCommentToEdit(c)}
+              onDeleteComment={handleDeleteComment}
+            />
+            <div className="mt-4">
+              <CommentForm
+                onAddComment={handleAddComment}
+                commentToEdit={commentToEdit}
+                onUpdateComment={handleUpdateComment}
+                onDeleteComment={handleDeleteComment}
+                onCancelEdit={() => setCommentToEdit(null)}
+              />
+            </div>
+          </div>
+        )}
       </div>
-
-      <button
-        onClick={() => setShowComments(prev => !prev)}
-        className="mt-3 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        {showComments ? 'Ocultar Comentarios' : 'Ver Comentarios'}
-      </button>
-
-      {showComments && (
-        <div className="mt-4 space-y-4">
-          <CommentForm
-            onAddComment={handleAddComment}
-            commentToEdit={commentToEdit}
-            onUpdateComment={handleUpdate}
-            onDeleteComment={handleDelete}
-            onCancelEdit={handleCancelEdit}
-          />
-
-          {loading && <p className="text-gray-600">Cargando comentarios...</p>}
-          {error && <p className="text-red-600">{error}</p>}
-
-          <CommentList
-            comments={comments}
-            onEditComment={handleEditComment}
-            onDeleteComment={handleDelete}
-          />
-        </div>
-      )}
     </div>
   )
 }

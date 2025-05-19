@@ -10,29 +10,34 @@ const CommentList = ({ comments, onEditComment, onDeleteComment }) => {
   }
 
   return (
-    <div className="space-y-4">
-      {comments.map((comment) => (
-        <div key={comment._id} className="border rounded p-4">
-          <div className="flex justify-between items-center mb-2">
-            <h4 className="font-semibold">{comment.name}</h4>
-            <small className="text-gray-500">
-              {new Date(comment.date).toLocaleString()}
-            </small>
-          </div>
-          <p className="mb-3">{comment.content}</p>
-          <div className="flex space-x-2">
-            <button
-              onClick={() => onEditComment(comment)}
-              className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-            >
-              Editar
-            </button>
-            <button
-              onClick={() => onDeleteComment(comment._id)}
-              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-            >
-              Eliminar
-            </button>
+    <div className="mb-4">
+      {comments.map(c => (
+        <div
+          key={c._id}
+          className="card bg-light mb-3 shadow-sm"
+        >
+          <div className="card-body">
+            <div className="d-flex justify-content-between align-items-start mb-2">
+              <h5 className="card-title mb-0">{c.name}</h5>
+              <small className="text-muted">
+                {new Date(c.date).toLocaleString()}
+              </small>
+            </div>
+            <p className="card-text">{c.content}</p>
+            <div className="d-flex justify-content-end gap-2">
+              <button
+                onClick={() => onEditComment(c)}
+                className="btn btn-sm btn-warning"
+              >
+                Editar
+              </button>
+              <button
+                onClick={() => onDeleteComment(c._id)}
+                className="btn btn-sm btn-danger"
+              >
+                Eliminar
+              </button>
+            </div>
           </div>
         </div>
       ))}

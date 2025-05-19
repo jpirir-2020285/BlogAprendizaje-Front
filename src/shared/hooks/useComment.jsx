@@ -8,24 +8,19 @@ import {
 
 const useComments = (postId) => {
   const [comments, setComments] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    const fetchComments = async () => {
-      if (!postId) return
+    if (!postId) return
 
+    const fetchComments = async () => {
       setLoading(true)
       setError(null)
       try {
-        const data = await getCommentsByPost(postId)
-        if (data.error) {
-          setComments([])
-          setError(data.message)
-        } else {
-          setComments(data)
-        }
-      } catch {
+        const fetched = await getCommentsByPost(postId)
+        setComments(fetched)
+      } catch (err) {
         setError('Error al cargar comentarios')
       } finally {
         setLoading(false)
@@ -41,39 +36,35 @@ const useComments = (postId) => {
       if (!res.error) {
         setComments((prev) => [...prev, res.commentary])
       } else {
-        setError(res.message)
+        throw new Error(res.message)
       }
     } catch {
       setError('Error al agregar comentario')
     }
   }
 
-  const handleUpdateComment = async (commentId, updatedData) => {
+  const handleUpdateComment = async (id, data) => {
     try {
-      const res = await updateComment(commentId, updatedData)
+      const res = await updateComment(id, data)
       if (!res.error) {
         setComments((prev) =>
-          prev.map((c) =>
-            c._id === res.commentary._id ? res.commentary : c
-          )
+          prev.map((c) => (c._id === res.commentary._id ? res.commentary : c))
         )
       } else {
-        setError(res.message)
+        throw new Error(res.message)
       }
     } catch {
       setError('Error al actualizar comentario')
     }
   }
 
-  const handleDeleteComment = async (commentId) => {
+  const handleDeleteComment = async (id) => {
     try {
-      const res = await deleteComment(commentId)
+      const res = await deleteComment(id)
       if (!res.error) {
-        setComments((prev) =>
-          prev.filter((c) => c._id !== commentId)
-        )
+        setComments((prev) => prev.filter((c) => c._id !== id))
       } else {
-        setError(res.message)
+        throw new Error(res.message)
       }
     } catch {
       setError('Error al eliminar comentario')
