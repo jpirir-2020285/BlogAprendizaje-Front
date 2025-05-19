@@ -37,7 +37,6 @@ export const getPostsByYear = async (year) => {
   }
 }
 
-// Crea, actualiza y borra...
 export const createPost = async (data) => {
   try {
     const res = await api.post('/post', data)
