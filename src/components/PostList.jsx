@@ -22,7 +22,6 @@ const PostList = () => {
 
   return (
     <div className="container mx-auto p-4">
-      {/* filtros */}
       <div className="flex space-x-4 mb-6">
         <select
           className="border rounded px-3 py-2"
@@ -47,11 +46,9 @@ const PostList = () => {
         </select>
       </div>
 
-      {/* estado */}
       {loading && <p>Cargando...</p>}
       {error && <p className="text-red-600">{error}</p>}
 
-      {/* lista */}
       {!loading && !error && (
         sortedPosts.length > 0 ? (
           sortedPosts.map((post) => (
