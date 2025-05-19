@@ -27,7 +27,6 @@ export const getPostsByCourse = async (course) => {
   }
 }
 
-// Trae posts filtrados por año (2023, 2024, 2025…)
 export const getPostsByYear = async (year) => {
   try {
     const res = await api.get(`/post/year/${year}`)
