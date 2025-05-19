@@ -1,47 +1,45 @@
-import { useState, useEffect } from "react";
-import { getPostsRequest } from "../../services/api.js";
+import { useState, useEffect } from 'react'
+import { getPosts, getPostsByCourse, getPostsByYear } from '../../services/api.js'
 
-export const usePost = () => {
-  const [posts, setPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const usePosts = (course = '', year = '') => {
+    const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      setError(null);
-      const res = await getPostsRequest();
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                setLoading(true)
+                let data = []
 
-      if (res.error) {
-        setError("Error al cargar las publicaciones");
-        setPosts([]);
-        setFilteredPosts([]);
-      } else {
-        setPosts(res.data || []);
-        setFilteredPosts(res.data || []);
-      }
-      setLoading(false);
-    };
+                if (course && year) {
+                    const coursePosts = await getPostsByCourse(course)
+                    const yearPosts = await getPostsByYear(year)
+                    data = coursePosts.filter(post =>
+                        yearPosts.some(yPost => yPost._id === post._id)
+                    )
+                } else if (course) {
+                    data = await getPostsByCourse(course)
+                } else if (year) {
+                    data = await getPostsByYear(year)
+                } else {
+                    data = await getPosts()
+                }
 
-    fetchPosts();
-  }, []);
+                setPosts(data)
+                setError(null)
+            } catch (err) {
+                setError('Error al cargar las publicaciones')
+                setPosts([])
+            } finally {
+                setLoading(false)
+            }
+        }
 
-  const filterByCourse = (courseName) => {
-    if (!courseName || courseName === "") {
-      setFilteredPosts(posts);
-      return;
-    }
-    const filtered = posts.filter(
-      (post) => post.course && post.course.toUpperCase() === courseName.toUpperCase()
-    );
-    setFilteredPosts(filtered);
-  };
+        fetchPosts()
+    }, [course, year])
 
-  return {
-    posts: filteredPosts,
-    loading,
-    error,
-    filterByCourse,
-  };
-};
+    return { posts, loading, error }
+}
+
+export default usePosts
